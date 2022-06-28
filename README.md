@@ -1,0 +1,2 @@
+# ja-abstract-getter
+ 
