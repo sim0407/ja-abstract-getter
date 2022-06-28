@@ -44,7 +44,7 @@ class AllPapersProcessor:
         for paper in self.papers:
             paper.convert_PMID_to_URL()
             paper.get_paper_info()
-            #paper.translate_en_to_ja()
+            paper.translate_en_to_ja()
             paper.test()
 
     #One.outputを使って情報を取り出して、それをCSVに書き出す
