@@ -118,7 +118,7 @@ class OnePaperInformation:
         self.ja_abstract = result['translations'][0]['text']
     
     def output(self):
-        return [self.title, self.autors, self.journal, self.date, self.en_abstract, self.ja_abstract]
+        return [self.URL, self.title, self.autors, self.journal, self.date, self.en_abstract, self.ja_abstract]
     
     def test(self):
         print(self.title)
