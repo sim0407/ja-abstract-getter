@@ -96,6 +96,25 @@ class OnePaperInformation:
     def get_paper_info(self):
         self.HTTP_request()
         self.extract_paper_info()
+        self.en_abstract = self.remove_space_and_blank_line(self.en_abstract)
+
+    def remove_space_and_blank_line(self, text: str):
+        '''
+        連続する改行やスペースを取り除く関数
+        Args:
+            text: 改行やスペースを取り除きたいテキスト
+
+        Returns:
+            rtn_text: 改行やスペースを取り除いた後のテキスト
+        '''
+        import re
+        rtn_text = text
+        rtn_text = re.sub('(\rn)|\r','\n',rtn_text)
+        rtn_text = re.sub('[ 　]{1,}',' ',rtn_text)
+        rtn_text = re.sub('(\n )','\n',rtn_text)
+        rtn_text = re.sub('( \n)','\n',rtn_text)
+        rtn_text = re.sub('\n{2,}','\n',rtn_text)
+        return rtn_text
 
 
     def translate_en_to_ja(self):
