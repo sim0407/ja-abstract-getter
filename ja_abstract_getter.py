@@ -86,12 +86,25 @@ class OnePaperInformation:
         import requests
         from bs4 import BeautifulSoup
         soup = BeautifulSoup(self.response.text, 'html.parser')
-        self.title = soup.select('div#short-view-heading h1.heading-title')[0].get_text().strip()
-        self.autors = soup.select('div#short-view-heading span.authors-list')[0].get_text().strip()
-        self.journal = soup.select('div#short-view-heading span.citation-journal')[0].get_text().strip()
-        self.date = soup.select('div#short-view-heading span.date')[0].get_text().strip()
-        self.en_abstract = soup.select('div#enc-abstract')[0].get_text().strip()
+        self.title = self.get_first_element_text(soup.select('div#short-view-heading h1.heading-title')).strip()
+        self.autors = self.get_first_element_text(soup.select('div#short-view-heading span.authors-list')).strip()
+        self.journal = self.get_first_element_text(soup.select('div#short-view-heading span.citation-journal')).strip()
+        self.date = self.get_first_element_text(soup.select('div#short-view-heading span.date')).strip()
+        self.en_abstract = self.get_first_element_text(soup.select('div#enc-abstract')).strip()
         #TODO 必要な要素の確認
+
+    def get_first_element_text(self, lst: list):
+        '''
+        リストの中身の長さを見て、長さが0なら空の文字列、1以上なら先頭の要素のテキストを返す関数
+        '''
+        from bs4 import BeautifulSoup
+        rtn_str = ""
+        if len(lst) == 0:
+            pass
+        else:
+            soup = lst[0]
+            rtn_str = soup.get_text()
+        return rtn_str
     
     def get_paper_info(self):
         self.HTTP_request()
