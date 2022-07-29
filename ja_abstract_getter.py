@@ -8,9 +8,12 @@ from urllib import response
 
 class AllPapersProcessor:
     def __init__(self) -> None:
+        import datetime
         self.search_words = ''
         self.papers = []
         self.PMIDs = []
+        self.search_date = str(datetime.datetime.now())[:10]
+        
 
 
     def input_search_words(self):
@@ -44,17 +47,20 @@ class AllPapersProcessor:
         for paper in self.papers:
             paper.convert_PMID_to_URL()
             paper.get_paper_info()
-            paper.translate_en_to_ja()
+            #paper.translate_en_to_ja()
             paper.test()
 
-    #One.outputを使って情報を取り出して、それをCSVに書き出す
+    #OnePaperInformation.output()を使って情報を取り出して、それをCSVに書き出す
     def save(self):
         import csv
         import os
         dir_name = os.getcwd()
         all_papers_info_list = []
         for paper in self.papers:
-            all_papers_info_list.append(paper.output())
+            paper_info = paper.output()
+            paper_info.append(self.search_words)
+            paper_info.append(self.search_date)
+            all_papers_info_list.append(paper_info)
         with open(dir_name+'/'+self.search_words+'.csv', 'w', encoding='utf8') as f:
             writer = csv.writer(f, lineterminator= '\n')
             writer.writerows(all_papers_info_list)
