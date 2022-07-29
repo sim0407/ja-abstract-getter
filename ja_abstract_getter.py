@@ -1,4 +1,5 @@
 
+from fileinput import filename
 from optparse import check_builtin
 from posixpath import dirname
 from re import search
@@ -47,7 +48,7 @@ class AllPapersProcessor:
         for paper in self.papers:
             paper.convert_PMID_to_URL()
             paper.get_paper_info()
-            #paper.translate_en_to_ja()
+            paper.translate_en_to_ja()
             paper.test()
 
     #OnePaperInformation.output()を使って情報を取り出して、それをCSVに書き出す
@@ -55,13 +56,20 @@ class AllPapersProcessor:
         import csv
         import os
         dir_name = os.getcwd()
-        all_papers_info_list = []
+        file_name = dir_name+'/'+'paper_info'+'.csv'
+        former_info = [] #以前までに検索してきて保存されている情報を格納する二次元配列
+        try:
+            with open(file_name, 'r', encoding='utf8') as f:
+                former_info = list(csv.reader(f))
+        except Exception as e:
+            print(e)
+        all_papers_info_list = former_info
         for paper in self.papers:
             paper_info = paper.output()
             paper_info.append(self.search_words)
             paper_info.append(self.search_date)
             all_papers_info_list.append(paper_info)
-        with open(dir_name+'/'+self.search_words+'.csv', 'w', encoding='utf8') as f:
+        with open(file_name, 'w', encoding='utf8') as f:
             writer = csv.writer(f, lineterminator= '\n')
             writer.writerows(all_papers_info_list)
     
@@ -173,7 +181,5 @@ def main():
 
 
 main()
-
-
 
 
